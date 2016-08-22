@@ -26,22 +26,27 @@ def s_punctuate(text):
 	
 	#Add random punctuation
 	spacecount = text.count(' ')
-	num_to_add = spacecount//(random.randint(5,spacecount)+1)
-	print num_to_add
+	med_length = spacecount//5
+	num_to_add = random.randint(1,med_length)
 
 
 	for i in range(0, num_to_add):
 		splitted = text.split()
-		w_append = random.randint(0,spacecount)
+		w_append = random.randint(0,(len(splitted)-1))
 		
 		if w_append in p_appended:
-			w_append = random.randint(0,spacecount)
+			w_append = random.randint(0,(len(splitted)-1))
 		else:
 			p_appended.append(w_append)
 		
 		chartoadd = random.choice(to_append)
 		splitted[w_append] = splitted[w_append]+chartoadd
 		text = " ".join(splitted)
+
+	#Capitalize inside the text, with a badass RE taken from stackoverflow
+	def uppercase(matchobj):
+		return matchobj.group(0).upper()
+	text = re.sub('^([a-z])|[\.|\?|\!]\s*([a-z])|\s+([a-z])(?=\.)', uppercase, text)
 
 	#Finish with a closing symbol
 	text = text + (random.choice(to_end))
